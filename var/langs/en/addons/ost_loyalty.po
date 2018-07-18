@@ -1,0 +1,290 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: latest\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language-Team: TechupBusiness\n"
+"Language: en_US\n"
+
+msgctxt "Addons::name::ost_loyalty"
+msgid "SimpleToken - OST Loyalty (TechupBusiness Addon)"
+msgstr "SimpleToken - OST Loyalty (TechupBusiness Addon)"
+
+msgctxt "Addons::description::ost_loyalty"
+msgid "Integrates your custom branded cryptocurrency based on SimpleToken (OST) into CS-Cart, to create your own reward program to encourage and bind customers."
+msgstr "Integrates your custom branded cryptocurrency based on SimpleToken (OST) into CS-Cart, to create your own reward program to encourage and bind customers."
+
+msgctxt "SettingsSections::ost_loyalty::general"
+msgid "General"
+msgstr "General"
+
+msgctxt "SettingsOptions::ost_loyalty::api_key"
+msgid "API Key"
+msgstr "API Key"
+
+msgctxt "SettingsTooltips::ost_loyalty::api_key"
+msgid "Please insert your API Key here, from your OST Kit Backend."
+msgstr "Please insert your API Key here, from your OST Kit Backend."
+
+msgctxt "SettingsOptions::ost_loyalty::api_secret"
+msgid "API Secret"
+msgstr "API Secret"
+
+msgctxt "SettingsTooltips::ost_loyalty::api_secret"
+msgid "Please insert your API Secret here, from your OST Kit Backend."
+msgstr "Please insert your API Secret here, from your OST Kit Backend."
+
+msgctxt "SettingsOptions::ost_loyalty::company_uuid"
+msgid "Company UUID"
+msgstr "Company UUID"
+
+msgctxt "SettingsTooltips::ost_loyalty::company_uuid"
+msgid "Please insert your company UUID, from your OST Kit Backend. You will find it in the 'Developers' section and it looks like '5819b92d-2678-43d1-6c31-a567a3b50s73'."
+msgstr "Please insert your company UUID, from your OST Kit Backend. You will find it in the 'Developers' section and it looks like '5819b92d-2678-43d1-6c31-a567a3b50s73'."
+
+msgctxt "SettingsOptions::ost_loyalty::mode"
+msgid "Mode"
+msgstr "Mode"
+
+msgctxt "SettingsTooltips::ost_loyalty::mode"
+msgid "You can use the mode option to control whether to use the live environment or the test environement."
+msgstr "You can use the mode option to control whether to use the live environment or the test environement."
+
+msgctxt "SettingsVariants::ost_loyalty::mode::test"
+msgid "Test"
+msgstr "Test"
+
+msgctxt "SettingsVariants::ost_loyalty::mode::live"
+msgid "Live"
+msgstr "Live"
+
+msgctxt "SettingsOptions::ost_loyalty::user_privacy"
+msgid "User privacy"
+msgstr "User privacy"
+
+msgctxt "SettingsTooltips::ost_loyalty::user_privacy"
+msgid "You can decide if you want to publish your users email address to the OST blockchain (as username) or not. Better set this to private."
+msgstr "You can decide if you want to publish your users email address to the OST blockchain (as username) or not. Better set this to private."
+
+msgctxt "SettingsVariants::ost_loyalty::user_privacy::private"
+msgid "Private"
+msgstr "Private"
+
+msgctxt "SettingsVariants::ost_loyalty::user_privacy::public"
+msgid "Public"
+msgstr "Public"
+
+msgctxt "SettingsSections::ost_loyalty::actions"
+msgid "Configure actions"
+msgstr "Configure actions"
+
+msgctxt "SettingsOptions::ost_loyalty::userRewardFactor"
+msgid "Percentage of user reward (per currency unit)"
+msgstr "Percentage of user reward (per currency unit)"
+
+msgctxt "SettingsTooltips::ost_loyalty::userRewardFactor"
+msgid "Defines how much reward in percent a customer will get per main currency unit (e.g. 1 USD). Example USD: Reward 1.0 would be a (later) payback of 1 cent for each spend 1 USD (from the buyers perspective it's a discount of 1 percent that he can claim with the next order)"
+msgstr "Defines how much reward in percent a customer will get per main currency unit (e.g. 1 USD). Example USD: Reward 1.0 would be a (later) payback of 1 cent for each spend 1 USD (from the buyers perspective it's a discount of 1 percent that he can claim with the next order)"
+
+msgctxt "SettingsOptions::ost_loyalty::userRegistration_amount"
+msgid "User registration reward (in main your currency e.g. USD)"
+msgstr "User registration reward (in main your currency e.g. USD)"
+
+msgctxt "Languages::accept_tokens"
+msgid "Deduct tokens from user (OST loyalty)"
+msgstr "Deduct tokens from user (OST loyalty)"
+
+msgctxt "Languages::grant_tokens"
+msgid "Grant tokens (OST loyalty)"
+msgstr "Grant tokens (OST loyalty)"
+
+msgctxt "Languages::pay_with_tokens"
+msgid "Pay with tokens"
+msgstr "Pay with tokens"
+
+msgctxt "Languages::tokens"
+msgid "Tokens"
+msgstr "Tokens"
+
+msgctxt "Languages::tokens_available"
+msgid "You have <b>[token]</b> ([value]) left to use as discount."
+msgstr "You have <b>[token]</b> ([value]) left to use as discount."
+
+msgctxt "Languages::tokens_to_earn"
+msgid "You will <b>earn [token]</b> ([value]) for this order"
+msgstr "You will <b>earn [token]</b> ([value]) for this order"
+
+msgctxt "Languages::tokens_to_use"
+msgid "<b>[token]</b> as discount used"
+msgstr "<b>[token]</b> as discount used"
+
+msgctxt "Languages::tokens_use_here"
+msgid "Use your [symbol] here"
+msgstr "Use your [symbol] here"
+
+msgctxt "Languages::msg_too_less_tokens"
+msgid "You have less tokens in your account-wallet ([account]) than you want to spend ([spend]). Tokens were adjusted."
+msgstr "You have less tokens in your account-wallet ([account]) than you want to spend ([spend]). Tokens were adjusted."
+
+msgctxt "Languages::msg_too_many_tokens"
+msgid "You can't spend more tokens ([spend]) on this order than it's value ([max] tokens)."
+msgstr "You can't spend more tokens ([spend]) on this order than it's value ([max] tokens)."
+
+msgctxt "Languages::ost_kit_error_title_a"
+msgid "OST KIT - Error"
+msgstr "OST KIT - Error"
+
+msgctxt "Languages::ost_kit_error_title_v"
+msgid "Token point error"
+msgstr "Token point error"
+
+msgctxt "Languages::ost_kit_error_title_c"
+msgid "Token point error"
+msgstr "Token point error"
+
+msgctxt "Languages::ost_kit_error_message_customers"
+msgid "An error occured while processing your tokens. Don't worry, we will fix it and distribute all tokens properly."
+msgstr "An error occured while processing your tokens. Don't worry, we will fix it and distribute all tokens properly."
+
+msgctxt "Languages::logger_ost_loyalty"
+msgid "OST Loyalty logger"
+msgstr "OST Loyalty logger"
+
+msgctxt "Languages::logger_variant_errors"
+msgid "Log errors"
+msgstr "Log errors"
+
+msgctxt "Languages::logger_variant_api_calls"
+msgid "Log API calls"
+msgstr "Log API calls"
+
+msgctxt "Languages::logger_variant_user_mismatch"
+msgid "Log missing user in local db (with balance>0)"
+msgstr "Log missing user in local db (with balance>0)"
+
+msgctxt "Languages::token_balance"
+msgid "Your wallet: [token] ([value])"
+msgstr "Your wallet: [token] ([value])"
+
+msgctxt "Languages::token_balance_empty"
+msgid "Your wallet: [token]"
+msgstr "Your wallet: [token]"
+
+msgctxt "Languages::message_tokens_header"
+msgid "Rewards"
+msgstr "Rewards"
+
+msgctxt "Languages::message_tokens_received"
+msgid "You received [token] ([value]) into your wallet."
+msgstr "You received [token] ([value]) into your wallet."
+
+msgctxt "Languages::message_tokens_to_receive"
+msgid "You will receive [token] ([value]) into your wallet soon."
+msgstr "You will receive [token] ([value]) into your wallet soon."
+
+msgctxt "Languages::message_tokens_to_receive_noval"
+msgid "You will receive your [symbol] soon into your wallet."
+msgstr "You will receive your [symbol] soon into your wallet."
+
+msgctxt "Languages::msg_usd_installed_title"
+msgid "Needed to install currency USD"
+msgstr "Needed to install currency USD"
+
+msgctxt "Languages::msg_usd_installed"
+msgid "Please set the correct exchange rate now (<b>IMPORTANT!!!</b>). It will not be displayed in your shop but it is used to calculate the OST branded token exchange rate."
+msgstr "Please set the correct exchange rate now (<b>IMPORTANT!!!</b>). It will not be displayed in your shop but it is used to calculate the OST branded token exchange rate."
+
+msgctxt "Languages::block_ost_loyalty_token"
+msgid "OST Loyalty wallet"
+msgstr "OST Loyalty wallet"
+
+msgctxt "Languages::block_ost_loyalty_token_description"
+msgid "Displays wallet information of the user (token and current value)"
+msgstr "Displays wallet information of the user (token and current value)"
+
+msgctxt "Languages::account_tokens_simple"
+msgid "Simple view"
+msgstr "Simple view"
+
+msgctxt "Languages::your_wallet_headline"
+msgid "My [symbol] wallet"
+msgstr "My [symbol] wallet"
+
+msgctxt "Languages::my_wallet"
+msgid "My wallet"
+msgstr "My wallet"
+
+msgctxt "Languages::action_description_userRegistration"
+msgid "User registration bonus"
+msgstr "User registration bonus"
+
+msgctxt "Languages::action_description_orderReward"
+msgid "Reward for order"
+msgstr "Reward for order"
+
+msgctxt "Languages::action_description_orderRewardDeny"
+msgid "Reward for order canceled"
+msgstr "Reward for order canceled"
+
+msgctxt "Languages::action_description_orderPay"
+msgid "Used to pay order"
+msgstr "Used to pay order"
+
+msgctxt "Languages::action_description_orderPayRefund"
+msgid "Refund of payed tokens"
+msgstr "Refund of payed tokens"
+
+msgctxt "Languages::will_appear_soon"
+msgid "<i>Will appear soon</i>"
+msgstr "<i>Will appear soon</i>"
+
+msgctxt "Languages::order_token_payed"
+msgid "Used to pay order"
+msgstr "Used to pay order"
+
+msgctxt "Languages::order_token_bonus"
+msgid "Reward for order"
+msgstr "Reward for order"
+
+msgctxt "Languages::admin_user_uuid"
+msgid "OST Loyalty user UUID"
+msgstr "OST Loyalty user UUID"
+
+msgctxt "Languages::admin_user_balance"
+msgid "OST Loyalty user balance"
+msgstr "OST Loyalty user balance"
+
+msgctxt "Languages::promotion_bonus_ost_loyalty_give_tokens"
+msgid "Give tokens (OST Loyalty)"
+msgstr "Give tokens (OST Loyalty)"
+
+msgctxt "Languages::promotion_cond_ost_loyalty_tokens_balance"
+msgid "Token balance of user (OST Loyalty)"
+msgstr "Token balance of user (OST Loyalty)"
+
+msgctxt "Languages::promotion_cond_ost_loyalty_tokens_spent"
+msgid "Tokens spent on order (OST Loyalty)"
+msgstr "Tokens spent on order (OST Loyalty)"
+
+msgctxt "Languages::promotion_cond_ost_loyalty_tokens_income"
+msgid "Tokens earned for order (OST Loyalty)"
+msgstr "Tokens earned for order (OST Loyalty)"
+
+msgctxt "Languages::show_in_ost_explorer"
+msgid "Show (on blockchain explorer)"
+msgstr "Show (on blockchain explorer)"
+
+msgctxt "Languages::log_type_ost_loyalty"
+msgid "OST Loyalty"
+msgstr "OST Loyalty"
+
+msgctxt "Languages::log_action_user_mismatch"
+msgid "User mismatch"
+msgstr "User mismatch"
+
+msgctxt "Languages::log_action_errors"
+msgid "Errors"
+msgstr "Errors"
+
+msgctxt "Languages::log_action_api_calls"
+msgid "API calls"
+msgstr "API calls"

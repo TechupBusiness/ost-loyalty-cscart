@@ -1,0 +1,10 @@
+{
+  "name": "techupbusiness/ost-loyalty",
+  "require": {
+    "cweagans/composer-patches": "~1.0",
+    "cscart/sdk" : "*",
+    "cscart/cscart-ultimate" : "*",
+    "php": ">=7.0"
+  },
+  "_note": "cscart does not support composer, please see https://github.com/TechupBusiness/cscart-composer"
+}

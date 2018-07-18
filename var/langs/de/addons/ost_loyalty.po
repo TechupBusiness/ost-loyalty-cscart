@@ -1,0 +1,118 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: latest\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language-Team: TechupBusiness\n"
+"Language: de_DE\n"
+
+msgctxt "Addons::name::ost_loyalty"
+msgid "SimpleToken - OST Loyalty (TechupBusiness Addon)"
+msgstr "SimpleToken - OST Loyalty (TechupBusiness Addon)"
+
+msgctxt "Addons::description::ost_loyalty"
+msgid "Integrates your custom branded cryptocurrency based on SimpleToken (OST) into CS-Cart, to create your own community and reward users."
+msgstr "Integriert eine eigene Crypto-Währung als Kundenbindungsprogramm (Punkte-Konto für Kunden) auf Basis von SimpleToken (OST) in CS-Cart."
+
+msgctxt "SettingsSections::ost_loyalty::general"
+msgid "General"
+msgstr "Allgemein"
+
+msgctxt "SettingsOptions::ost_loyalty::api_key"
+msgid "API Key"
+msgstr "API Key"
+
+msgctxt "SettingsTooltips::ost_loyalty::api_key"
+msgid "Please insert your API Key here, from your OST Kit Backend."
+msgstr "Bitte fügen Sie hier ihren API Key ein, den Sie in Ihrem OST Kit Administrationsbereich finden."
+
+msgctxt "SettingsOptions::ost_loyalty::api_secret"
+msgid "API Secret"
+msgstr "API Secret"
+
+msgctxt "SettingsTooltips::ost_loyalty::api_secret"
+msgid "Please insert your API Secret here, from your OST Kit Backend."
+msgstr "Bitte fügen Sie hier ihr API Secret ein, das Sie in Ihrem OST Kit Administrationsbereich finden."
+
+msgctxt "SettingsOptions::ost_loyalty::company_uuid"
+msgid "Company UUID"
+msgstr "Unternehmens-UUID"
+
+msgctxt "SettingsTooltips::ost_loyalty::company_uuid"
+msgid "Please insert your company UUID, from your OST Kit Backend. You will find it in the 'Developers' section and it looks like '5819b92d-2678-43d1-6c31-a567a3b50s73'."
+msgstr "Bitte fügen Sie hier ihre Unternehmens-UUID ein. Sie finden Sie im 'Developer' Bereich in Ihrem Kit Administrationsbereich. Die UUID sieht beispielsweise so aus: '5819b92d-2678-43d1-6c31-a567a3b50s73'"
+
+msgctxt "SettingsOptions::ost_loyalty::mode"
+msgid "Mode"
+msgstr "Modus"
+
+msgctxt "SettingsTooltips::ost_loyalty::mode"
+msgid "You can use the mode option to control whether to use the live environment or the test environement."
+msgstr "Sie können diese Option verwenden um zu kontrollieren, ob die Live- oder Testumgebung verwendet werden soll."
+
+msgctxt "SettingsVariants::ost_loyalty::mode::test"
+msgid "Test"
+msgstr "Test"
+
+msgctxt "SettingsVariants::ost_loyalty::mode::live"
+msgid "Live"
+msgstr "Live"
+
+msgctxt "SettingsOptions::ost_loyalty::user_privacy"
+msgid "User privacy"
+msgstr "Privatsphären-Einstellung"
+
+msgctxt "SettingsTooltips::ost_loyalty::user_privacy"
+msgid "You can decide if you want to publish your users email address to the OST blockchain (as username) or not. Better set this to private."
+msgstr "Hier können Sie festlegen, ob die E-Mail addresse der Benutzer in der OST blockchain (als Benutzername) verwendet werden soll. Wir empfehlen dies auf 'Privat' zu stellen."
+
+msgctxt "SettingsVariants::ost_loyalty::user_privacy::private"
+msgid "Private"
+msgstr "Privat"
+
+msgctxt "SettingsVariants::ost_loyalty::user_privacy::public"
+msgid "Public"
+msgstr "Öffentlich"
+
+msgctxt "SettingsOptions::ost_loyalty::enabled_transactions"
+msgid "Enabled transaction types"
+msgstr "Aktivierte Transaktions-Typen"
+
+msgctxt "SettingsSections::ost_loyalty::transaction_types"
+msgid "Configure transaction types"
+msgstr "Configure transaction types"
+
+msgctxt "Languages::addonTransactionType.userRegistration"
+msgid "User registration"
+msgstr "Benutzer-Registrierung"
+
+msgctxt "SettingsOptions::ost_loyalty::transaction_type_info"
+msgid "Important"
+msgstr "Important"
+
+msgctxt "Languages::settings.transaction_type_info"
+msgid "Please select your desired transaction types first and save the settings dialog, afterwards you can set values for these transactions here."
+msgstr "Please select your desired transaction types first and save the settings dialog, afterwards you can set values for these transactions here."
+
+msgctxt "SettingsOptions::ost_loyalty::transactionType_userRegistration"
+msgid "User registration"
+msgstr "Benutzer-Registrierung"
+
+msgctxt "SettingsOptions::ost_loyalty::transactionType_userRegistration_CurrencyType"
+msgid "Value type"
+msgstr "Wert-Typ"
+
+msgctxt "SettingsTooltips::ost_loyalty::transactionType_userRegistration_CurrencyType"
+msgid "TODO Description for currencyType."
+msgstr "TODO Beschreibung für currencyType."
+
+msgctxt "SettingsVariants::ost_loyalty::transactionType_userRegistration_CurrencyType::fixed"
+msgid "Fixed"
+msgstr "Festgelegt"
+
+msgctxt "SettingsVariants::ost_loyalty::transactionType_userRegistration_CurrencyType::floating"
+msgid "Floating"
+msgstr "Flexibel"
+
+msgctxt "SettingsOptions::ost_loyalty::transactionType_userRegistration_CurrencyValue"
+msgid "Value (in chosen currency)"
+msgstr "Wert (in gewählter Währung)"

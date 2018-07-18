@@ -1,0 +1,178 @@
+<?xml version="1.0"?>
+<addon scheme="3.0">
+	<id>ost_loyalty</id>
+	<version>0.1</version>
+	<priority>100</priority>
+	<default_language>en</default_language>
+	<has_icon>Y</has_icon>
+	<supplier>TechupBusiness</supplier>
+	<supplier_link>http://www.techupbusiness.com</supplier_link>
+	<auto_install>ULTIMATE</auto_install><!-- MULTIVENDOR, -->
+	<compatibility>
+		<core_version>
+			<min>4.0.0</min>
+		</core_version>
+		<core_edition>ULTIMATE</core_edition>
+		<php_version>
+			<min>5.3.6</min>
+		</php_version>
+	</compatibility>
+	<settings>
+		<sections>
+			<section id="general">
+				<items>
+					<item id="api_key">
+						<type>input</type>
+					</item>
+					<item id="api_secret">
+						<type>password</type>
+					</item>
+					<item id="company_uuid">
+						<type>hidden</type>
+					</item>
+					<item id="mode">
+						<type>selectbox</type>
+						<variants>
+							<item id="test" />
+							<item id="live" />
+						</variants>
+						<default_value>test</default_value>
+					</item>
+					<item id="user_privacy">
+						<type>selectbox</type>
+						<variants>
+							<item id="private" />
+							<item id="public" />
+						</variants>
+						<default_value>private</default_value>
+					</item>
+				</items>
+			</section>
+			<section id="actions">
+				<items>
+					<item id="userRegistration_amount">
+						<type>input</type>
+						<default_value>1.0</default_value>
+					</item>
+					<item id="userRewardFactor">
+						<type>input</type>
+						<default_value>1</default_value>
+					</item>
+					<!-- Hidden actions -->
+					<item id="userRegistrationId">
+						<type>hidden</type>
+					</item>
+					<item id="orderRewardId">
+						<type>hidden</type>
+					</item>
+					<item id="orderRewardDenyId">
+						<type>hidden</type>
+					</item>
+					<item id="orderPayId">
+						<type>hidden</type>
+					</item>
+					<item id="orderPayRefundId">
+						<type>hidden</type>
+					</item>
+				</items>
+			</section>
+		</sections>
+	</settings>
+	<functions>
+		<item for="install">fn_ost_loyalty_add_logs</item>
+		<item for="uninstall">fn_ost_loyalty_remove_logs</item>
+	</functions>
+	<queries>
+		<item for="install">
+			ALTER TABLE `?:users`
+			ADD `ost_uuid` VARCHAR(36) NOT NULL DEFAULT '',
+			ADD `ost_balance` decimal(12,5) unsigned;
+		</item>
+		<item for="install">
+			CREATE TABLE `?:ost_tx` (
+			`tx_id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+			`tx_reference` VARCHAR(36) NOT NULL,
+			`tx_hash` VARCHAR(66) NULL DEFAULT '',
+			`chain_id` INT(11) NULL,
+			`user_id` INT(11) UNSIGNED NOT NULL,
+			`action_id` INT(11) UNSIGNED NOT NULL ,
+			`action_name` VARCHAR(50) NOT NULL,
+			`value` decimal(12,5) unsigned,
+			`commission` decimal(12,5) unsigned,
+			`coefficient` decimal(12,5) unsigned,
+			`status` VARCHAR(1) NOT NULL DEFAULT 'S' COMMENT 'P(rocessing), F(ailed), C(omplete)' ,
+			`created_ts` INT(11) UNSIGNED NOT NULL ,
+			`updated_ts` INT(11) UNSIGNED NOT NULL ,
+			PRIMARY KEY (`tx_id`));
+		</item>
+		<item for="install">
+			CREATE TABLE `?:ost_queue` (
+			`queue_id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+			`user_id` INT(11) UNSIGNED NOT NULL,
+			`value` decimal(12,5) unsigned,
+			`action_name` VARCHAR(50) NOT NULL,
+			`action_id` INT(11) UNSIGNED NOT NULL ,
+			`status` VARCHAR(1) NOT NULL DEFAULT 'W' COMMENT 'W=Waiting, D=Disabled, F=Finished, E=Error' ,
+			`created_ts` INT(11) UNSIGNED NOT NULL ,
+			`updated_ts` INT(11) UNSIGNED NOT NULL ,
+			PRIMARY KEY (`queue_id`));
+		</item>
+		<item for="install">
+			REPLACE INTO ?:privileges (privilege, is_default, section_id)
+			VALUES ('manage_ost_loyalty', 'Y', 'addons');
+		</item>
+		<item for="install">
+			REPLACE INTO ?:status_data (status_id, param, value)
+			SELECT status_id, 'accept_tokens' as param, 'Y' as value
+			FROM ?:statuses
+			WHERE status = 'P';
+		</item>
+		<item for="install">
+			REPLACE INTO ?:status_data (status_id, param, value)
+			SELECT status_id, 'accept_tokens' as param, 'Y' as value
+			FROM ?:statuses
+			WHERE status = 'C';
+		</item>
+		<item for="install">
+			REPLACE INTO ?:status_data (status_id, param, value)
+			SELECT status_id, 'accept_tokens' as param, 'Y' as value
+			FROM ?:statuses
+			WHERE status = 'O';
+		</item>
+		<item for="install">
+			REPLACE INTO ?:status_data (status_id, param, value)
+			SELECT status_id, 'grant_tokens' as param, 'Y' as value
+			FROM ?:statuses
+			WHERE status = 'C';
+		</item>
+		<item for="install">
+			REPLACE INTO `?:seo_names` (`name`, `object_id`, `company_id`, `type`, `dispatch`, `path`, `lang_code`) VALUES ('mein-guthaben', '0', '0', 's', 'ost_loyalty.show', '', 'de');
+		</item>
+		<item for="install">
+			REPLACE INTO `?:seo_names` (`name`, `object_id`, `company_id`, `type`, `dispatch`, `path`, `lang_code`) VALUES ('my-wallet', '0', '0', 's', 'ost_loyalty.show', '', 'en');
+		</item>
+		<item for="uninstall">
+			DROP TABLE `?:ost_queue`;
+		</item>
+		<item for="uninstall">
+			DROP TABLE `?:ost_tx`;
+		</item>
+		<item for="uninstall">
+			ALTER TABLE `?:users`
+			DROP `ost_uuid`,
+			DROP `ost_balance`;
+		</item>
+		<item for="uninstall">
+			DELETE FROM ?:privileges
+			WHERE privilege LIKE 'manage_ost_loyalty'
+		</item>
+		<item for="uninstall">
+			DELETE FROM ?:status_data
+			WHERE param='grant_tokens'
+		</item>
+		<item for="uninstall">
+			DELETE FROM ?:status_data
+			WHERE param='accept_tokens'
+		</item>
+	</queries>
+</addon>

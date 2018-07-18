@@ -1,0 +1,1 @@
+{style src="addons/ost_loyalty/styles.less"}
