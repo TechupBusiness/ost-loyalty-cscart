@@ -75,6 +75,7 @@ switch($mode) {
 			if($i % mt_rand(5,15) == 0) {
 				try {
 					$newUser = $userRepo->create( md5($i + $max_user_i) );
+					$allUsers[] = $newUser;
 					$tx = Main::getInstance()->userRegistration( $newUser->id );
 					$tx_count++;
 				} catch(Exception $ex) {
@@ -88,21 +89,27 @@ switch($mode) {
 				usleep(floatval(mt_rand( 0, 3 ).".".mt_rand(1,9)) * 1000000);
 			}
 
-			$random_user_i = mt_rand(0, $max_user_i);
+			$random_user_i = mt_rand(0, count($allUsers)-1);
 			$user = $allUsers[$random_user_i];
 
 			$do_createOrderPay = boolval(mt_rand(0,1));
+			$do_reward = false;
 
-			if($user->token_balance>10 && $do_createOrderPay) {
-				$tx = Main::getInstance()->createOrderPay( mt_rand( 1, intval( floor( $user->token_balance ) ) ), $user->id );
-				$tx_count++;
-				if($tx->id) {
-					echo "<br />" . date( "H:i:s" ) . " (" . $i . "): createOrderPay executed";
-				} else {
-					echo "<br />" . date( "H:i:s" ) . " (" . $i . "): createOrderPay error";
-				}
-				usleep( floatval( mt_rand( 0, 3 )."." . mt_rand( 1, 9 ) ) * 1000000 );
-			} else {
+			if($do_createOrderPay) {
+				$balance = Main::getInstance()->getBalancesRepository()->get($user->id);
+				if($balance->available_balance>10) {
+					$tx = Main::getInstance()->createOrderPay( mt_rand( 1, intval( floor( $balance->token_balance ) ) ), $user->id );
+					$tx_count ++;
+					if ( $tx->id ) {
+						echo "<br />" . date( "H:i:s" ) . " (" . $i . "): createOrderPay executed";
+					} else {
+						echo "<br />" . date( "H:i:s" ) . " (" . $i . "): createOrderPay error";
+					}
+					usleep( floatval( mt_rand( 0, 3 ) . "." . mt_rand( 1, 9 ) ) * 1000000 );
+				} else $do_reward = true;
+			} else $do_reward = true;
+
+			if($do_reward) {
 				$tx = Main::getInstance()->createOrderReward(mt_rand(1,40).".".mt_rand(0,99), $user->id);
 				$tx_count++;
 				if($tx->id) {

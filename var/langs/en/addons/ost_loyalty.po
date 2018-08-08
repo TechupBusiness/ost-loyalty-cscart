@@ -57,6 +57,22 @@ msgctxt "SettingsVariants::ost_loyalty::mode::live"
 msgid "Live"
 msgstr "Live"
 
+msgctxt "SettingsOptions::ost_loyalty::ostview"
+msgid "OST View links"
+msgstr "OST View links"
+
+msgctxt "SettingsTooltips::ost_loyalty::ostview"
+msgid "If enabled, users have a link in their transaction history, to open the transaction in OST View, the blockchain explorer for the OST side-chain."
+msgstr "If enabled, users have a link in their transaction history, to open the transaction in OST View, the blockchain explorer for the OST side-chain."
+
+msgctxt "SettingsVariants::ost_loyalty::ostview::enabled"
+msgid "Enabled"
+msgstr "Enabled"
+
+msgctxt "SettingsVariants::ost_loyalty::ostview::disabled"
+msgid "Disabled"
+msgstr "Disabled"
+
 msgctxt "SettingsOptions::ost_loyalty::user_privacy"
 msgid "User privacy"
 msgstr "User privacy"

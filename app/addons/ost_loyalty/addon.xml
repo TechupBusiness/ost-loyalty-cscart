@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <addon scheme="3.0">
 	<id>ost_loyalty</id>
-	<version>0.1</version>
+	<version>2.0</version>
 	<priority>100</priority>
 	<default_language>en</default_language>
 	<has_icon>Y</has_icon>
@@ -16,6 +16,7 @@
 		<php_version>
 			<min>5.3.6</min>
 		</php_version>
+		<conflicts>reward_points</conflicts>
 	</compatibility>
 	<settings>
 		<sections>
@@ -45,6 +46,14 @@
 							<item id="public" />
 						</variants>
 						<default_value>private</default_value>
+					</item>
+					<item id="ostview">
+						<type>selectbox</type>
+						<variants>
+							<item id="enabled" />
+							<item id="disabled" />
+						</variants>
+						<default_value>enabled</default_value>
 					</item>
 				</items>
 			</section>

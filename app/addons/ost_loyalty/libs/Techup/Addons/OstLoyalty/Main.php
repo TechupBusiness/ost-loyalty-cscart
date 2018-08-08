@@ -8,13 +8,15 @@ use Techup\Addons\OstLoyalty\Repositories\ostQueueRepository;
 use Techup\Helper\SettingsHelper;
 use Techup\Helper\Singleton;
 use Techup\SimpleTokenApi\Enums\KindEnum;
-use Techup\SimpleTokenApi\Enums\TransactionStatusEnum;
+use Techup\SimpleTokenApi\Enums\StatusEnum;
 use Techup\SimpleTokenApi\Models\ActionModel;
 use Techup\SimpleTokenApi\Models\PricePointsModel;
 use Techup\SimpleTokenApi\Models\TokenModel;
 use Techup\SimpleTokenApi\Models\UserModel;
 use Techup\SimpleTokenApi\Models\TransactionModel;
 use Techup\SimpleTokenApi\Repositories\ActionRepository;
+use Techup\SimpleTokenApi\Repositories\BalancesRepository;
+use Techup\SimpleTokenApi\Repositories\LedgerRepository;
 use Techup\SimpleTokenApi\Repositories\TokenRepository;
 use Techup\SimpleTokenApi\Repositories\UserRepository;
 use Techup\SimpleTokenApi\Repositories\TransactionRepository;
@@ -70,17 +72,33 @@ class Main extends Singleton {
 		if($api_secret==null ) $api_secret = $this->settingApiSecret;
 		return new ActionRepository( $this->settingMode, $api_key, $api_secret, $this->settingCompanyUuid );
 	}
+
 	/**
 	 * @return TransactionRepository
 	 */
 	public function getTransactionRepository() {
 		return new TransactionRepository( $this->settingMode, $this->settingApiKey, $this->settingApiSecret, $this->settingCompanyUuid );
 	}
+
 	/**
 	 * @return UserRepository
 	 */
 	public function getUserRepository() {
 		return new UserRepository($this->settingMode, $this->settingApiKey, $this->settingApiSecret, $this->settingCompanyUuid);
+	}
+
+	/**
+	 * @return BalancesRepository
+	 */
+	public function getBalancesRepository() {
+		return new BalancesRepository($this->settingMode, $this->settingApiKey, $this->settingApiSecret, $this->settingCompanyUuid);
+	}
+
+	/**
+	 * @return LedgerRepository
+	 */
+	public function getLedgerRepository() {
+		return new LedgerRepository($this->settingMode, $this->settingApiKey, $this->settingApiSecret, $this->settingCompanyUuid);
 	}
 
 	/**
@@ -107,7 +125,7 @@ class Main extends Singleton {
 			// Create user
 			$userRepo = $this->getUserRepository();
 			$user = $userRepo->create($this->settingUserPrivacy == 'public' ? $user_id : sha1($user_id));
-			$user->
+
 			// Save to db
 			db_query('UPDATE ?:users SET ost_uuid=?s WHERE user_id=?i', $user->id, $user_id);
 
@@ -124,19 +142,20 @@ class Main extends Singleton {
 
 	public function getLiveUserBalance($user_id, $save = true) {
 		$user_uuid = $this->getOstUserUuid($user_id);
+
 		try {
 			if(empty($user_uuid)) {
 				throw new \Exception("No user_uuid");
 			}
-			$userRepo = $this->getUserRepository();
-			$user = $userRepo->get($user_uuid);
+			$balancesRepo = $this->getBalancesRepository();
+			$balancesModel = $balancesRepo->get( $user_uuid );
 			if($save) {
-				$this->updateUserBalance($user);
+				$this->updateUserBalance($user_uuid, $balancesModel->available_balance);
 			}
-			return $user->token_balance;
+			return $balancesModel->available_balance;
 		} catch(\Exception $ex) {
-			$user = $this->createOstUser($user_id );
-			return $user->token_balance;
+			$this->displayErrorMessage($ex->getMessage());
+			return null;
 		}
 	}
 
@@ -153,33 +172,151 @@ class Main extends Singleton {
 		}
 	}
 
-	public function updateAllUserDataLive() {
-		/** @var UserModel[] $user */
-		$user = $this->getAllLiveUser();
-		foreach ($user as $u) {
-			$this->updateUserBalance($u);
-		}
-	}
-
-	public function updateUserBalanceLive($uuid) {
+	/**
+	 * @param $user_id
+	 *
+	 * @return null|UserModel
+	 */
+	public function getOstUser($user_id) {
 		try {
-			$userRepo  = $this->getUserRepository();
-			$userModel = $userRepo->get( $uuid );
-
-			$this->updateUserBalance( $userModel );
-		}
-		catch(\Exception $ex) {
-
+			$repo    = $this->getUserRepository();
+			$uuid    = $this->getOstUserUuid( $user_id );
+			$ostUser = $repo->get( $uuid );
+			return $ostUser;
+		} catch(\Exception $ex) {
+			return null;
 		}
 	}
 
 	/**
-	 * @param UserModel $userModel
+	 * Returns transactions of a user
+	 *
+	 * @param $user_id
+	 *
+	 * @return TransactionModel[]
 	 */
-	public function updateUserBalance($userModel) {
-		$rows = db_query("UPDATE ?:users SET ost_balance=?d WHERE ost_uuid=?s", $userModel->token_balance, $userModel->id);
-		if($rows==0 && $userModel->token_balance>0) {
-			fn_log_event(LOGGER_OST_LOYALTY, 'user_mismatch', [ 'uuid' => $userModel->id, 'balance' => $userModel->token_balance ]);
+	public function getUserTransactions($user_id) {
+		try {
+
+			// Get all transactions for a user ToDo use pagination
+			$ostTxs = [ ];
+			try {
+				$balancesRepo = $this->getLedgerRepository();
+				$results = true;
+				$page = 1;
+				while($results) {
+					try {
+						$txes = $balancesRepo->list( $this->getOstUserUuid( $user_id ) , $page, 100 );
+						if(count($txes)>0) {
+							$ostTxs = array_merge( $ostTxs, $txes );
+							if(count($txes)==100) {
+								$page ++;
+							} else {
+								throw new \Exception("Just one page, skip another request");
+							}
+						} else {
+							throw new \Exception("Not more results");
+						}
+					} catch (\Exception $ex) {
+						$results = false;
+					}
+				}
+			} catch(\Exception $ex) {
+				// ToDo Handle
+			}
+
+			$tx_ids = [];
+			// Get transactions from OST
+			foreach($ostTxs as $tx) {
+				$tx_ids[] = $tx->id;
+			}
+
+			// Get additional TX data from database
+			$dbTxs = db_get_hash_multi_array('SELECT * FROM ?:ost_tx WHERE tx_reference IN (?a)', ['tx_reference'], $tx_ids);
+
+			$transactions = [];
+			foreach($ostTxs as $tx) {
+				$transactions[] = [
+					'ost' => $tx,
+					'db' => isset($dbTxs[$tx->id]) ? $dbTxs[$tx->id][0] : []
+				];
+			}
+
+			return $transactions;
+
+		} catch(\Exception $ex) {
+			// ToDo proper error handling
+		}
+	}
+
+	public function getBalances($user_id) {
+		try {
+			$balancesRepo = $this->getBalancesRepository();
+			$uuid         = $this->getOstUserUuid( $user_id );
+			$balances = $balancesRepo->get($uuid);
+			return $balances;
+		} catch(\Exception $ex) {
+			return null;
+		}
+	}
+
+	/**
+	 * Updates all user balances
+	 */
+	public function updateAllUserDataLive() {
+		/** @var BalancesRepository $balancesRepo */
+		$balancesRepo  = $this->getBalancesRepository();
+
+		/** @var UserModel[] $user */
+		$user = $this->getAllLiveUser();
+
+		foreach ($user as $u) {
+			try {
+				$user_id = db_get_field('SELECT user_id FROM ?:users WHERE ost_uuid=?i', $u->id );
+				if($user_id>0) {
+					$balancesModel = $balancesRepo->get( $u->id );
+					$this->updateUserBalance( $u->id, $balancesModel->available_balance );
+				}
+			} catch(\Exception $ex) {
+				// ToDo Handling
+			}
+		}
+	}
+
+	public function updateUserDataLive($user_id) {
+		/** @var BalancesRepository $balancesRepo */
+		$balancesRepo  = $this->getBalancesRepository();
+		try {
+			$balancesModel = $balancesRepo->get( $this->getOstUserUuid($user_id) );
+			$this->updateUserBalance( $this->getOstUserUuid($user_id), $balancesModel->available_balance );
+			return $balancesModel->available_balance;
+		} catch(\Exception $ex) {
+			return null;
+		}
+	}
+
+	/**
+	 * @param $uuid
+	 */
+	public function updateUserBalanceLive($uuid) {
+		try {
+			$balancesRepo  = $this->getBalancesRepository();
+			$balancesModel = $balancesRepo->get( $uuid );
+			$this->updateUserBalance( $uuid, $balancesModel->available_balance );
+		}
+		catch(\Exception $ex) {
+			// ToDo Handling
+		}
+	}
+
+	/**
+	 * @param $user_uuid
+	 * @param $balance
+	 */
+	public function updateUserBalance($user_uuid, $balance) {
+		$rows = db_query("UPDATE ?:users SET ost_balance=?d WHERE ost_uuid=?s", $balance, $user_uuid);
+		if($rows==0 && $balance>0) {
+			fn_log_event(LOGGER_OST_LOYALTY, 'user_mismatch', [ 'uuid' => $user_uuid, 'balance' => $balance ]);
 		}
 	}
 
@@ -211,7 +348,7 @@ class Main extends Singleton {
 				}
 			}
 		} catch(\Exception $ex) {
-
+			// ToDo Handle
 		}
 		return $allUser;
 	}
@@ -330,7 +467,11 @@ class Main extends Singleton {
 			if(count($err_array)>0) $message .= '</ul>';
 		}
 
-		fn_log_event(LOGGER_OST_LOYALTY, 'errors', json_decode($exceptionMsg, true));
+		$msgArr = json_decode($exceptionMsg, true);
+		$errData = array_merge($msgArr['err'],$msgArr['err']['error_data']);
+		unset($errData['error_data']);
+
+		fn_log_event(LOGGER_OST_LOYALTY, 'errors', $errData);
 
 		if(AREA != 'A') {
 			$message = __('ost_kit_error_message_customers');
@@ -378,11 +519,11 @@ class Main extends Singleton {
 
 		foreach($waitingTxs as $tx) {
 			$execAction = $this->executeOstAction($tx->actionName, $tx->userId, $tx->value);
-			if($execAction->status == TransactionStatusEnum::processing() || $execAction->status == TransactionStatusEnum::complete() ) {
+			if( $execAction->status == StatusEnum::processing() || $execAction->status == StatusEnum::complete() ) {
 				$tx->status = 'F'; // Finished
 				$tx->updatedTimestamp = time();
 				$ostQueueRepo->save($tx);
-			} elseif($execAction->status == TransactionStatusEnum::failed() ) {
+			} elseif( $execAction->status == StatusEnum::failed() ) {
 				$tx->status = 'E'; // Error
 				$tx->updatedTimestamp = time();
 				$ostQueueRepo->save($tx);

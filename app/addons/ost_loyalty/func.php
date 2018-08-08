@@ -106,18 +106,13 @@ function fn_ost_loyalty_get_orders(&$params, &$fields, &$sortings, &$condition, 
 	Hooks::getInstance()->get_orders($fields, $sortings, $join);
 }
 
-function fn_ost_loyalty_get_product_data_post(&$product_data, &$auth, &$preview, &$lang_code) {
-	// TODO get current exchange rate of tokens via API
-	// $product_data['token_value'] =
-}
-
 /**
  * HOOK: When order is getting deleted, we want to remove the points from the user's account
  * @param $order_id
  */
 function fn_ost_loyalty_delete_order(&$order_id)
 {
-	// TODO how to handle an order deletion!? We are missing important order data here...
+	// TODO We are missing important order data here...
 //	$order_info = array('deleted_order' => true);
 //	$status_to = $status_from = '';
 //	$empty_array = array();
@@ -131,7 +126,7 @@ function fn_ost_loyalty_delete_order(&$order_id)
  * @param integer $company_id Company ID
  */
 function fn_ost_loyalty_ult_delete_company(&$company_id) {
-	// TODO Send all tokens from this company (=user) to our company (=marketplace vendor or storefront)
+	// TODO ?? Send all tokens from this company (=user) to our company (=marketplace vendor or storefront)
 	// Check if we can still get our UUID or we can lookup the company without!?
 }
 
@@ -150,7 +145,6 @@ function fn_ost_loyalty_update_cart_by_data_post(&$cart, &$new_cart_data, &$auth
 
 /**
  * Changes before applying promotion rules
- * TODO #############################################################
  * @param array $promotions List of promotions
  * @param string $zone - promotiontion zone (catalog, cart)
  * @param array $data data array (product - for catalog rules, cart - for cart rules)
@@ -215,7 +209,7 @@ function fn_ost_loyalty_save_log(&$type, &$action, &$data, &$user_id, &$content,
 				$content = $data;
 				break;
 			case "api_calls":
-				//$content['deleted_data'] = $data['old_data'];
+				$content = $data;
 				break;
 			case "user_mismatch":
 				$content = $data;
