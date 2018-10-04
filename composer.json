@@ -1,8 +1,6 @@
 {
-  "name": "techupbusiness/ost-loyalty",
+  "name": "techupbusiness/ost-loyalty-cscart",
   "require": {
-    "cweagans/composer-patches": "~1.0",
-    "cscart/sdk" : "*",
     "cscart/cscart-ultimate" : "*",
     "php": ">=7.0"
   },
